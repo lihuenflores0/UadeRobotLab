@@ -2,7 +2,7 @@
 
 **Alumnos:** Santiago Balsamo, Emanuel Brandt, Martin Salvagni, Lihuen Flores
 **Materia:** Programación I
-**Repositorio:** [URL de tu fork]
+**Repositorio:** (https://github.com/lihuenflores0/UadeRobotLab)
 
 ## Registro de acciones
 
@@ -79,15 +79,12 @@ El PDF usaba un simulador que solo imprimía logs y comandos expresados como obj
 
 **Método:** clonación con GitHub Desktop desde
 https://github.com/tsamaan/UadeRobotLab.git.
-**Ruta local:** `[ruta completa]`
-**Fork:** [URL del fork], creado en GitHub para [motivo real].
-**Estado de los remotes:** `origin` apunta a [original / fork].
+**Ruta local:** C:\Users\lihue\OneDrive\Escritorio\GitHub\-Proyecto-Integrador--Etapa-1--Consejo-del-Mate\UadeRobotLab
+**Fork:** https://github.com/lihuenflores0/UadeRobotLab
 
-Se verificó la presencia de `INSTALACION.md` y `LEEME_ESTUDIANTE.md`
+Los archivos `INSTALACION.md` y `LEEME_ESTUDIANTE.md` se encuentran
 en `05LaboratoriosTPs/TP02_Programacion_I/`.
 
-![Repo clonado](evidencias/02_instalacion/01_github_desktop_clone.png)
-*GitHub Desktop con el repositorio clonado.*
+![Repo clonado](evidencias/02_instalacion/github_desktop_clone.png)
 
-![Carpeta TP02](evidencias/02_instalacion/05_carpeta_tp02.png)
-*Contenido de TP02_Programacion_I con ambos archivos .md.*
+![Carpeta TP02](evidencias/02_instalacion/carpeta_tp02.png)
