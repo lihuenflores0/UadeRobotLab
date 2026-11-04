@@ -19,6 +19,7 @@
 | 9 | `python3 -c "import mujoco; print(mujoco.__version__)"` | 3.14.0 | - | MuJoCo ya estaba instalado, no hizo falta pip install | RESUELTO |
 | 10 | `py -3 -m pip install mujoco` |	`Requirement already satisfied: mujoco 3.14.0 (y dependencias)` | - | Ya estaba instalado | RESUELTO |
 | 11 | INICIAR_SIMULADOR.bat, opción 1 (G1) | Simulador iniciado: Robot: Unitree G1 | - | - | RESUELTO |
+| 12 | py -3 mi_desarrollo\mi_tp02.py desde la terminal de VS Code, con el simulador G1 abierto (plantilla sin completar) | [OK] Conectado a Unitree G1, límites 0.2 m/s / 0.5 rad/s / 10 s, [OK] Desconectado | - | - | RESUELTO |
 
 
 ## Respuestas de la sección 3
@@ -114,9 +115,20 @@ en `05LaboratoriosTPs/TP02_Programacion_I/`.
 
 **Comando:** `INICIAR_SIMULADOR.bat`, robot seleccionado: 1 (G1)
 **Aclaración:** el orientador menciona el Go2, pero se trabaja con el G1
-**Resultado:** el simulador inició correctamente (Python 3.14.8, MuJoCo v3.14.0, modelos oficiales). Se abrió la ventana de MuJoCo con el G1 visible.
+**Resultado:** el simulador inició correctamente (Python 3.14.8, MuJoCo v3.14.0). Se abrió la ventana de MuJoCo con el G1 visible.
 **Problemas:** ninguno.
 
 ![Selección del robot](evidencias/05_gemelo_digital/seleccion_robot.png)
 
 ![Ventana MuJoCo](evidencias/05_gemelo_digital/ventana_mujoco.png)
+
+## Etapa 6: primer programa contra el gemelo digital
+
+**Comando:** `py -3 mi_desarrollo\mi_tp02.py` (terminal de VS Code, simulador G1 abierto en otra terminal)
+**Estado del código:** plantilla sin completar (las cuatro funciones con `# TU CODIGO ACA`).
+**Conexión:** exitosa. `[OK] Conectado a Unitree G1 (humanoide).` 
+**Movimiento observado:** ninguno, porque `ejecutar_mision` todavía no recorre comandos.
+**Cierre:** `[OK] Desconectado.`
+**Errores:** ninguno.
+
+![Ejecución del programa](evidencias/05_gemelo_digital/ejecucion_programa.png)

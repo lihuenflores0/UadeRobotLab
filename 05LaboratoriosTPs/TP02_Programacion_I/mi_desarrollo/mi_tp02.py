@@ -61,7 +61,7 @@ def ejecutar_comando(robot, comando):
     Eso llega como un ErrorDeSeguridad y conviene atraparlo.
     """
     # TU CODIGO ACA
-
+    pass
 
 # =====================================================================
 #  PARTE 3 - Recorrer la mision entera
@@ -77,7 +77,8 @@ def ejecutar_mision(robot, mision, historial):
     Un comando invalido NO tiene que cortar la mision.
     """
     # TU CODIGO ACA
-
+    print("Recibí", len(mision), "comandos")
+    pass
 
 
 # =====================================================================
@@ -92,7 +93,7 @@ def generar_reporte(historial):
       - cual fue el motivo de cada rechazo
     """
     # TU CODIGO ACA
-    
+    pass
 
 
 # =====================================================================
@@ -102,19 +103,13 @@ def main():
     robot = Robot()
     robot.conectar()
 
-    historial = []
-
-    mision_saludo = [
-        ("saludar",),
-        ("avanzar", 0.2, 2.0),
-        ("saludar",),
-    ]   
+    historial = [] 
 
     try:
         # Empeza probando con MISION_BASICA.
         # Cuando funcione, proba con MISION_CON_ERRORES: esa tiene
         # comandos invalidos a proposito.
-        ejecutar_mision(robot, MISION_BASICA, historial)
+        ejecutar_mision(robot, MISION_CUADRADO, historial)
         generar_reporte(historial)
     finally:
         robot.detenerse()
