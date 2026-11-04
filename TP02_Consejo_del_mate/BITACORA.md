@@ -20,7 +20,10 @@
 | 10 | `py -3 -m pip install mujoco` |	`Requirement already satisfied: mujoco 3.14.0 (y dependencias)` | - | Ya estaba instalado | RESUELTO |
 | 11 | INICIAR_SIMULADOR.bat, opción 1 (G1) | Simulador iniciado: Robot: Unitree G1 | - | - | RESUELTO |
 | 12 | py -3 mi_desarrollo\mi_tp02.py desde la terminal de VS Code, con el simulador G1 abierto (plantilla sin completar) | [OK] Conectado a Unitree G1, límites 0.2 m/s / 0.5 rad/s / 10 s, [OK] Desconectado | - | - | RESUELTO |
-
+| 13 | `ejecutar_mision(robot, MISION_BASICA, historial)` (simulador G1 abierto) | 4 ejecutados, 0 rechazados; el robot avanzó, giró a la derecha y avanzó | - | - | RESUELTO |
+| 14 | `MISION_CON_ERRORES` en `main()` | 11 recibidos: 4 ejecutados, 7 rechazados. La misión no se cortó y el reporte final se generó | - | - | RESUELTO |
+| 15 | `MISION_CUADRADO` en `main()` | 9 recibidos: 9 ejecutados, 0 rechazados. (Completar: si el robot volvió cerca del punto de partida) | - | - | RESUELTO |
+| 16 | Agrego `MISION_CIRCULO` (polígono de 24 lados) a `misiones.py` y `py -3 mi_desarrollo\mi_tp02.py` con esa misión en `main()` | 49 recibidos: 49 ejecutados, 0 rechazados. (Completar: si el círculo cerró o quedó abierto) | - | - | RESUELTO |
 
 ## Respuestas de la sección 3
 
@@ -122,6 +125,32 @@ en `05LaboratoriosTPs/TP02_Programacion_I/`.
 
 ![Ventana MuJoCo](evidencias/05_gemelo_digital/ventana_mujoco.png)
 
+## Arquitectura del laboratorio (sección 12)
+
+Nuestro programa no mueve el robot directamente. Pasa por tres partes:
+
+```
+mi_tp02.py
+ |
+ | robot.avanzar(...) / robot.girar(...) / robot.detenerse()
+ v
+robot.py (puente: no se modifica)
+ |
+ | socket local 127.0.0.1
+ v
+Gemelo digital: MuJoCo + modelo Unitree
+```
+
+- **`mi_tp02.py`**: es nuestro programa. Revisa los comandos de la misión y decide cuáles se mandan al robot. Solo se ocupa de la lógica.
+- **`robot.py`**: es el puente. Recibe las órdenes de nuestro programa y se las pasa al simulador. También controla los límites de seguridad: si una orden es demasiado fuerte o larga, la rechaza con un error (`ErrorDeSeguridad`). No se modifica.
+- **Socket local (127.0.0.1)**: es el "cable" entre `robot.py` y el simulador. Es local porque los dos programas corren en la misma computadora, pero son programas separados.
+- **Gemelo digital (MuJoCo)**: es la ventana 3D con el robot. Recibe las órdenes y mueve el modelo.
+
+**Por qué hay que abrir el simulador primero:** `robot.py` se conecta al simulador por el socket. Si el simulador no está abierto, no hay nadie del otro lado y la conexión falla.
+
+**Por qué es útil esta arquitectura:** podemos probar nuestras misiones en una simulación, sin un robot real y sin instalar el SDK oficial de Unitree.
+
+
 ## Etapa 6: primer programa contra el gemelo digital
 
 **Comando:** `py -3 mi_desarrollo\mi_tp02.py` (terminal de VS Code, simulador G1 abierto en otra terminal)
@@ -132,3 +161,64 @@ en `05LaboratoriosTPs/TP02_Programacion_I/`.
 **Errores:** ninguno.
 
 ![Ejecución del programa](evidencias/05_gemelo_digital/ejecucion_programa.png)
+
+## Etapa 7: pruebas de misiones
+
+### MISION_BASICA
+
+**Comando:** `py -3 mi_desarrollo\mi_tp02.py` con `MISION_BASICA` en `main()`
+**Qué se esperaba:** 4 comandos ejecutados, 0 rechazados. El robot avanza 0.4 m, gira 90° a la derecha y avanza 0.4 m.
+**Qué se observó:** El robot avanza un paso, gira y avanza un paso mas
+**Salida de la terminal - reporte:** 4 recibidos / 4 ejecutados / 0 rechazados
+**Errores:** ninguno
+
+![Salida MISION_BASICA](evidencias/06_misiones/basica_terminal.png)
+
+### MISION_CON_ERRORES
+
+| # | Comando | Motivo registrado | Quién lo rechazó |
+|---|---|---|---|
+| 3 | ("avanzar", 0.9, 2.0) | rechazado por el robot (seguridad) | robot.py |
+| 4 | ("avanzar", 0.2, 50.0) | rechazado por el robot (seguridad) | robot.py |
+| 5 | ("girar", 3.0, 2.0) | rechazado por el robot (seguridad) | robot.py |
+| 6 | ("volar", 0.2, 1.0) | comando desconocido: volar | comando_es_valido |
+| 7 | ("avanzar", "rapido", 2.0) | la velocidad no es un numero | comando_es_valido |
+| 8 | ("avanzar", 0.2) | avanzar lleva 2 datos | comando_es_valido |
+| 9 | ("avanzar", 0.2, -3.0) | el tiempo es negativo | comando_es_valido |
+
+![Salida MISION_CON_ERRORES](evidencias/06_misiones/errores_terminal.png)
+
+### MISION_CUADRADO
+
+**Comando:** `py -3 mi_desarrollo\mi_tp02.py` con `MISION_CUADRADO` en `main()`
+**Qué se esperaba:** 9 comandos ejecutados, 0 rechazados. Cada lado avanza 0.4 m (0.2 m/s × 2 s) y cada giro es de 90° a la derecha (-0.5 rad/s × 3.14 s ≈ -1.57 rad). Con cuatro lados y cuatro giros, el robot debería volver cerca del punto de partida y con el mismo rumbo.
+**Qué se observó:** El robot avanza un paso, gira a la derecha, avanza otro paso, gira nuevamente a la derecha avanzando un paso, gira a la derecha, avanza un ultimo paso y por ultimo gira a la derecha volviendo a su posicion inicial.
+**Salida de la terminal - reporte:** 9 recibidos / 9 ejecutados / 0 rechazados
+**Errores:** ninguno
+
+![Salida MISION_CUADRADO](evidencias/06_misiones/cuadrado_terminal.png)
+
+### Misión propia: MISION_CIRCULO
+
+**Objetivo:** hacer que el robot recorra una figura lo más parecida posible a un círculo.
+**Diseño:** los comandos `avanzar` y `girar` se ejecutan uno después del otro, no a la vez, por lo que el robot no puede trazar una curva continua. Se aproxima el círculo con un polígono regular de 24 lados: se repite 24 veces el par "avanzar un tramo corto + girar un ángulo chico". Cuantos más lados, más se parece a un círculo.
+
+**Cálculos:**
+- Lado: 0.2 m/s × 0.5 s = 0.1 m
+- Giro: 0.5 rad/s × 0.5236 s = 0.2618 rad = 15° a la izquierda
+- Giro total: 24 × 15° = 360° (vuelve al rumbo inicial)
+- Perímetro: 24 × 0.1 m = 2.4 m
+- Radio aproximado: 0.1 / (2 × sen(7.5°)) ≈ 0.38 m
+
+**Código:**
+MISION_CIRCULO = [
+    ("avanzar", 0.2, 0.5),
+    ("girar", 0.5, 0.5236),
+] * 24 + [("detenerse",)]
+
+**Qué se esperaba:** 49 comandos recibidos (24 × 2 + `detenerse`), 49 ejecutados, 0 rechazados. El robot gira siempre a la izquierda y termina cerca del punto de partida.
+**Qué se observó:** El robot avanzo y giro desde el punto de inicio, formando una figura circular hasta volver al mismo punto de partida.
+**Salida de la terminal - reporte:** 49 recibidos / 49 ejecutados / 0 rechazados
+**Errores:** ninguno
+
+![Final de la salida y reporte](evidencias/06_misiones/mision_propia_circulo.png)

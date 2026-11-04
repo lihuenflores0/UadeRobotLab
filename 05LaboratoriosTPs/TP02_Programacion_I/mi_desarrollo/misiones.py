@@ -77,10 +77,16 @@ MISION_LARGA = [
     ("detenerse",),
 ]
 
+MISION_CIRCULO = [
+    ("avanzar", 0.2, 0.5),
+    ("girar", 0.5, 0.5236),
+] * 24 + [("detenerse",)]
+
 # Todas juntas, por si queres elegir desde un menu.
 MISIONES = {
     "basica": MISION_BASICA,
     "cuadrado": MISION_CUADRADO,
     "errores": MISION_CON_ERRORES,
     "larga": MISION_LARGA,
+    "circulo": MISION_CIRCULO
 }
