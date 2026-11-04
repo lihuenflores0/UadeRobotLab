@@ -40,37 +40,7 @@ def comando_es_valido(comando):
       - que el tiempo no sea negativo
     """
     # TU CODIGO ACA
-    if not isinstance(comando, (tuple, list)) or len(comando) == 0:
-        return False, "no es una tupla o esta vacia"
-
-    nombre = comando[0]
-
-    if nombre in ("detenerse", "saludar"):
-        if len(comando) != 1:
-            return False, f"'{nombre}' no lleva datos"
-        return True, ""
-
-    if nombre in ("avanzar", "girar"):
-        if len(comando) != 3:
-            return False, f"'{nombre}' necesita velocidad y tiempo"
-
-        velocidad, tiempo = comando[1], comando[2]
-        for valor in (velocidad, tiempo):
-            # bool es subclase de int, por eso se excluye aparte
-            if isinstance(valor, bool) or not isinstance(valor, (int, float)):
-                return False, f"{valor!r} no es un numero"
-
-        if tiempo < 0:
-            return False, "el tiempo es negativo"
-        if tiempo > 10:
-            return False, f"el tiempo ({tiempo} s) supera el maximo de 10 s"
-
-        limite = 0.20 if nombre == "avanzar" else 0.50
-        if abs(velocidad) > limite:
-            return False, f"la velocidad ({velocidad}) supera el maximo de {limite}"
-        return True, ""
-
-    return False, f"el comando '{nombre}' no existe"
+    
 
 
 # =====================================================================
@@ -91,21 +61,6 @@ def ejecutar_comando(robot, comando):
     Eso llega como un ErrorDeSeguridad y conviene atraparlo.
     """
     # TU CODIGO ACA
-    nombre = comando[0]
-
-    try:
-        if nombre == "avanzar":
-            robot.avanzar(velocidad=comando[1], tiempo=comando[2])
-        elif nombre == "girar":
-            robot.girar(velocidad=comando[1], tiempo=comando[2])
-        elif nombre == "detenerse":
-            robot.detenerse()
-        elif nombre == "saludar":
-            robot.saludar()
-    except ErrorDeSeguridad as error:
-        return f"RECHAZADO POR EL ROBOT: {error}"
-
-    return "OK"
 
 
 # =====================================================================
@@ -122,23 +77,7 @@ def ejecutar_mision(robot, mision, historial):
     Un comando invalido NO tiene que cortar la mision.
     """
     # TU CODIGO ACA
-    for comando in mision:
-        valido, motivo = comando_es_valido(comando)
 
-        if not valido:
-            historial.append({
-                "comando": comando,
-                "ejecutado": False,
-                "detalle": motivo,
-            })
-            continue  # sigue con el siguiente, no corta la mision
-
-        resultado = ejecutar_comando(robot, comando)
-        historial.append({
-            "comando": comando,
-            "ejecutado": resultado == "OK",
-            "detalle": resultado,
-        })
 
 
 # =====================================================================
@@ -153,21 +92,7 @@ def generar_reporte(historial):
       - cual fue el motivo de cada rechazo
     """
     # TU CODIGO ACA
-    ok = [h for h in historial if h["ejecutado"]]
-    fallidos = [h for h in historial if not h["ejecutado"]]
-
-    print("=" * 50)
-    print("REPORTE DE LA MISION")
-    print("=" * 50)
-    print(f"Comandos totales:    {len(historial)}")
-    print(f"Ejecutados bien:     {len(ok)}")
-    print(f"Rechazados:          {len(fallidos)}")
-
-    if fallidos:
-        print("\nMotivos de rechazo:")
-        for h in fallidos:
-            print(f"  - {h['comando']}: {h['detalle']}")
-    print("=" * 50)
+    
 
 
 # =====================================================================
