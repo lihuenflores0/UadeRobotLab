@@ -17,6 +17,9 @@
 | 7 | `py -3 -m pip --version` | pip 26.3 | - | - | RESUELTO |
 | 8 | `git --version` | git 2.53.0.windows.2 | - | - | RESUELTO |
 | 9 | `python3 -c "import mujoco; print(mujoco.__version__)"` | 3.14.0 | - | MuJoCo ya estaba instalado, no hizo falta pip install | RESUELTO |
+| 10 | `py -3 -m pip install mujoco` |	`Requirement already satisfied: mujoco 3.14.0 (y dependencias)` | - | Ya estaba instalado | RESUELTO |
+| 11 | INICIAR_SIMULADOR.bat, opción 1 (G1) | Simulador iniciado: Robot: Unitree G1 | - | - | RESUELTO |
+
 
 ## Respuestas de la sección 3
 
@@ -106,3 +109,14 @@ en `05LaboratoriosTPs/TP02_Programacion_I/`.
 **Problemas:** ninguno.
 
 ![Verificación del entorno](evidencias/02_instalacion/verificacion_entorno.png)
+
+## Etapa 5: puesta en marcha del gemelo digital
+
+**Comando:** `INICIAR_SIMULADOR.bat`, robot seleccionado: 1 (G1)
+**Aclaración:** el orientador menciona el Go2, pero se trabaja con el G1
+**Resultado:** el simulador inició correctamente (Python 3.14.8, MuJoCo v3.14.0, modelos oficiales). Se abrió la ventana de MuJoCo con el G1 visible.
+**Problemas:** ninguno.
+
+![Selección del robot](evidencias/05_gemelo_digital/seleccion_robot.png)
+
+![Ventana MuJoCo](evidencias/05_gemelo_digital/ventana_mujoco.png)
